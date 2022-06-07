@@ -329,9 +329,19 @@ TopViewControllerForViewController(UIViewController *viewController) {
           companion.completed = completed;
         };
   }
-  [controller presentViewController:activityViewController
-                           animated:YES
-                         completion:nil];
+    
+    if ( [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"] ) {
+        [activityViewController popoverPresentationController].sourceView = UIApplication.sharedApplication.keyWindow;
+        [activityViewController popoverPresentationController].sourceRect = CGRectMake( UIApplication.sharedApplication.keyWindow.frame.size.width - 60, 20,40,40);
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [controller presentViewController:activityViewController
+                                 animated:YES
+                               completion:nil];
+    });
+    
+  
 }
 
 + (void)shareText:(NSString *)shareText
